@@ -7,12 +7,15 @@ import java.util.Random;
 public class Generator {
 
     public Object generateValueOfType(Class<?> clazz) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (PrimitiveTypeGenerator.isPrimitiveType(clazz)) {
+            return PrimitiveTypeGenerator.generateValueOfPrimitiveType(clazz);
+        }
+
         Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 
         int randomConstructorIndex = new Random().nextInt(constructors.length);
         Constructor<?> randomConstructor = constructors[randomConstructorIndex];
         return randomConstructor.newInstance(111);
     }
-
 
 }
