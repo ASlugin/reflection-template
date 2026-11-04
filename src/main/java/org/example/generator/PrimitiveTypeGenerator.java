@@ -27,7 +27,7 @@ public class PrimitiveTypeGenerator {
 
     public static Object generateValueOfPrimitiveType(Class<?> clazz) {
         if (!isPrimitiveType(clazz)) {
-            throw new UnsupportedOperationException(clazz.getName() + " is not a primitive type");
+            throw new IllegalArgumentException(clazz.getName() + " is not a primitive type");
         }
 
         Class<?> primitiveType = clazz.isPrimitive() ? clazz : WRAPPER_TYPE_MAP.get(clazz);
@@ -55,6 +55,6 @@ public class PrimitiveTypeGenerator {
         if (primitiveType == short.class)
             return (short) new Random().nextInt(Short.MIN_VALUE, Short.MAX_VALUE + 1);
 
-        throw new UnsupportedOperationException("Unsupported primitive type: " + primitiveType.getTypeName());
+        throw new IllegalArgumentException("Unsupported primitive type: " + primitiveType.getTypeName());
     }
 }

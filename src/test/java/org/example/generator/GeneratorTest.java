@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GeneratorTest {
 
@@ -33,6 +34,21 @@ class GeneratorTest {
 
             result = generator.generateValueOfType(wrapperType);
             assertType(wrapperType, result);
+        }
+    }
+
+    @Test
+    void generateValueOfType_String() throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object result = generator.generateValueOfType(String.class);
+        assertType(String.class, result);
+
+        String generatedString = (String) result;
+        assertTrue(generatedString.length() >= StringGenerator.MIN_LENGTH
+                        && generatedString.length() <= StringGenerator.MAX_LENGTH);
+
+        for (char character : generatedString.toCharArray()) {
+            assertTrue(character >= StringGenerator.MIN_CHARACTER
+                    && character <= StringGenerator.MAX_CHARACTER);
         }
     }
 

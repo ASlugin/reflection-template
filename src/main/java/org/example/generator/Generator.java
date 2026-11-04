@@ -11,6 +11,10 @@ public class Generator {
             return PrimitiveTypeGenerator.generateValueOfPrimitiveType(clazz);
         }
 
+        if (clazz == String.class) {
+            return StringGenerator.generateString();
+        }
+
         Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 
         int randomConstructorIndex = new Random().nextInt(constructors.length);

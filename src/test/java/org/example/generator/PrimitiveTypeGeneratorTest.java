@@ -69,8 +69,8 @@ class PrimitiveTypeGeneratorTest {
 
     @Test
     void rejectsNonPrimitiveTypeWhenGeneratingValue() {
-        UnsupportedOperationException exception = assertThrows(
-                UnsupportedOperationException.class,
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
                 () -> PrimitiveTypeGenerator.generateValueOfPrimitiveType(String.class)
         );
 
@@ -82,7 +82,7 @@ class PrimitiveTypeGeneratorTest {
         Class<?>[] voidTypes = {void.class, Void.class};
 
         for (Class<?> type : voidTypes) {
-            assertThrows(UnsupportedOperationException.class,
+            assertThrows(IllegalArgumentException.class,
                     () -> PrimitiveTypeGenerator.generateValueOfPrimitiveType(type),
                     type.getTypeName() + " cannot have a generated value");
         }

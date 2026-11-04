@@ -9,7 +9,7 @@ public class GenerateExample {
         try {
 //            Object generated = gen.generateValueOfType(Example.class);
 
-            Object generated = gen.generateValueOfType(Boolean.class);
+            Object generated = gen.generateValueOfType(String.class);
 
             System.out.println(generated);
         } catch (Throwable e) {
