@@ -3,6 +3,7 @@ package org.example.generator;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Random;
 
 public class Generator {
@@ -33,6 +34,10 @@ public class Generator {
 
         if (Collection.class.isAssignableFrom(clazz)) {
             return CollectionGenerator.generateCollection(clazz, this);
+        }
+
+        if (Map.class.isAssignableFrom(clazz)) {
+            return MapGenerator.generateMap(clazz, this);
         }
 
 

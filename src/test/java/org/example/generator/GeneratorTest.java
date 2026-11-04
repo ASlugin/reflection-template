@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -89,6 +90,21 @@ class GeneratorTest {
 
         for (Object value : generatedList) {
             assertEquals(Byte.class, value.getClass());
+        }
+    }
+
+    @Test
+    void generateValueOfType_Map() throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object result = generator.generateValueOfType(Map.class);
+
+        assertNotNull(result);
+        assertTrue(result instanceof Map<?, ?>);
+
+        Map<?, ?> generatedMap = (Map<?, ?>) result;
+        assertFalse(generatedMap.isEmpty());
+        for (Map.Entry<?, ?> entry : generatedMap.entrySet()) {
+            assertEquals(Byte.class, entry.getKey().getClass());
+            assertEquals(Byte.class, entry.getValue().getClass());
         }
     }
 

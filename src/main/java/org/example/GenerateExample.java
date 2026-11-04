@@ -1,6 +1,5 @@
 package org.example;
 
-import org.example.classes.Example;
 import org.example.classes.StateEnum;
 import org.example.generator.Generator;
 
@@ -25,6 +24,9 @@ public class GenerateExample {
 
             Collection<Object> list = (Collection<Object>) gen.generateValueOfType(Set.class);
             System.out.printf("List: type=%s %s\n", list.getClass().getTypeName(), list);
+
+            Map<Object, Object> map = (Map<Object, Object>) gen.generateValueOfType(LinkedHashMap.class);
+            System.out.printf("Map: type=%s %s\n", map.getClass().getTypeName(), map);
 
         } catch (Throwable e) {
             throw new RuntimeException(e);
