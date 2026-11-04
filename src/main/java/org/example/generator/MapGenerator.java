@@ -11,13 +11,13 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public final class MapGenerator {
+public class MapGenerator {
 
     public static final int MIN_SIZE = 1;
     public static final int MAX_SIZE = 5;
 
-    private static final Class<?> DEFAULT_KEY_TYPE = Byte.class;
-    private static final Class<?> DEFAULT_VALUE_TYPE = Byte.class;
+    public static final Class<?> DEFAULT_KEY_TYPE = Byte.class;
+    public static final Class<?> DEFAULT_VALUE_TYPE = Byte.class;
 
     private static final Class<?>[] IMPLEMENTATIONS = {
             TreeMap.class,

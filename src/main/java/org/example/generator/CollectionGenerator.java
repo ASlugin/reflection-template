@@ -3,6 +3,7 @@ package org.example.generator;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class CollectionGenerator {
@@ -22,16 +23,27 @@ public class CollectionGenerator {
     private CollectionGenerator() {}
 
     public static Object generateCollection(Class<?> clazz, Generator valueGenerator) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        return generateCollection(clazz, valueGenerator, DEFAULT_ELEMENT_TYPE, 0);
+    }
+
+    public static Object generateCollection(Class<?> clazz, Generator valueGenerator, Type elementType)
+            throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        return generateCollection(clazz, valueGenerator, elementType, 0);
+    }
+
+    static Object generateCollection(Class<?> clazz, Generator valueGenerator, Type elementType, int depth)
+            throws InvocationTargetException, InstantiationException, IllegalAccessException {
         if (!Collection.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException(clazz.getName() + " is not a Collection");
         }
 
         Class<?> concreteType = resolveConcreteType(clazz);
         Collection<Object> collection = instantiateCollection(concreteType, valueGenerator);
+        Type resolvedElementType = elementType == null ? DEFAULT_ELEMENT_TYPE : elementType;
 
         int size = (Integer) PrimitiveTypeGenerator.generateValueOfPrimitiveType(int.class, MIN_LENGTH, MAX_LENGTH);
         for (int i = 0; i < size; i++) {
-            collection.add(valueGenerator.generateValueOfType(DEFAULT_ELEMENT_TYPE));
+            collection.add(valueGenerator.generateValueOfType(resolvedElementType, depth));
         }
         return collection;
 

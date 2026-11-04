@@ -1,5 +1,6 @@
 package org.example.generator;
 
+import org.example.classes.Product;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -22,6 +23,22 @@ class CollectionGeneratorTest {
 
         assertInstanceOf(ArrayList.class, result);
         assertByteCollection((Collection<?>) result);
+    }
+
+    @Test
+    void createsCollectionOfRequestedElementType() throws Exception {
+        Collection<?> result = (Collection<?>) CollectionGenerator.generateCollection(
+                ArrayList.class,
+                generator,
+                Product.class
+        );
+
+        assertFalse(result.isEmpty());
+        for (Object value : result) {
+            Product product = assertInstanceOf(Product.class, value);
+            assertNotNull(product.getName());
+            assertTrue(product.getPrice() >= 0.0 && product.getPrice() < 1.0);
+        }
     }
 
     @Test

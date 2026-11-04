@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.classes.Cart;
+import org.example.classes.Example;
 import org.example.classes.StateEnum;
 import org.example.generator.Generator;
 
@@ -27,6 +29,12 @@ public class GenerateExample {
 
             Map<Object, Object> map = (Map<Object, Object>) gen.generateValueOfType(LinkedHashMap.class);
             System.out.printf("Map: type=%s %s\n", map.getClass().getTypeName(), map);
+
+            Example example = (Example) gen.generateValueOfType(Example.class);
+            System.out.printf("Example: %s\n", example);
+
+            Cart cart = (Cart) gen.generateValueOfType(Cart.class);
+            System.out.printf("Cart: %s\n", cart);
 
         } catch (Throwable e) {
             throw new RuntimeException(e);

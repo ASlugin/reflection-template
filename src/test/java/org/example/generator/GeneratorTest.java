@@ -1,9 +1,13 @@
 package org.example.generator;
 
+import org.example.classes.Rectangle;
 import org.example.classes.StateEnum;
+import org.example.classes.Cart;
+import org.example.classes.Product;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +16,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -106,6 +111,60 @@ class GeneratorTest {
             assertEquals(Byte.class, entry.getKey().getClass());
             assertEquals(Byte.class, entry.getValue().getClass());
         }
+    }
+
+    @Test
+    void generateValueOfType_Class() throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object result = generator.generateValueOfType(Rectangle.class);
+
+        Rectangle rectangle = assertInstanceOf(Rectangle.class, result);
+
+        Field lengthField = getDeclaredField(Rectangle.class, "length");
+        Field widthField = getDeclaredField(Rectangle.class, "width");
+        double length = assertGeneratedDoubleField(lengthField, rectangle);
+        double width = assertGeneratedDoubleField(widthField, rectangle);
+
+        assertEquals(length * width, rectangle.getArea(), 0.0);
+        assertEquals(2 * (length + width), rectangle.getPerimeter(), 0.0);
+    }
+
+    @Test
+    void generateValueOfType_Cart() throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Cart cart = assertInstanceOf(Cart.class, generator.generateValueOfType(Cart.class));
+
+        assertFalse(cart.getItems().isEmpty());
+        assertTrue(cart.getItems().size() >= CollectionGenerator.MIN_LENGTH
+                && cart.getItems().size() <= CollectionGenerator.MAX_LENGTH);
+
+        for (Product product : cart.getItems()) {
+            assertNotNull(product.getName());
+            assertTrue(product.getName().length() >= StringGenerator.MIN_LENGTH
+                    && product.getName().length() <= StringGenerator.MAX_LENGTH);
+            for (char character : product.getName().toCharArray()) {
+                assertTrue(character >= StringGenerator.MIN_CHARACTER
+                        && character <= StringGenerator.MAX_CHARACTER);
+            }
+            assertTrue(product.getPrice() >= 0.0 && product.getPrice() < 1.0);
+        }
+    }
+
+    private static Field getDeclaredField(Class<?> clazz, String name) {
+        try {
+            return clazz.getDeclaredField(name);
+        } catch (NoSuchFieldException exception) {
+            throw new AssertionError("Expected field " + name + " on " + clazz.getName(), exception);
+        }
+    }
+
+    private static double assertGeneratedDoubleField(Field field, Object instance) throws IllegalAccessException {
+        assertEquals(double.class, field.getType());
+        field.setAccessible(true);
+
+        Object value = field.get(instance);
+        assertInstanceOf(Double.class, value);
+        double generatedValue = (Double) value;
+        assertTrue(generatedValue >= 0.0 && generatedValue < 1.0);
+        return generatedValue;
     }
 
     private static void assertType(Class<?> expectedValueType, Object value) {
