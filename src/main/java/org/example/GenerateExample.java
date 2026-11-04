@@ -4,6 +4,8 @@ import org.example.classes.Example;
 import org.example.classes.StateEnum;
 import org.example.generator.Generator;
 
+import java.util.Arrays;
+
 public class GenerateExample {
     public static void main(String[] args) {
         var gen = new Generator();
@@ -17,6 +19,9 @@ public class GenerateExample {
             System.out.printf("Boolean: %s\n", gen.generateValueOfType(Boolean.class));
             System.out.printf("Character: %s\n", gen.generateValueOfType(Character.class));
             System.out.printf("Enum: %s\n", gen.generateValueOfType(StateEnum.class));
+
+            byte[] array = (byte[]) gen.generateValueOfType(byte[].class);
+            System.out.printf("Array of bytes: %s\n", Arrays.toString(array));
 
         } catch (Throwable e) {
             throw new RuntimeException(e);

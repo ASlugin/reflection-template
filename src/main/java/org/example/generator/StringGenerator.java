@@ -1,14 +1,13 @@
 package org.example.generator;
 
-public final class StringGenerator {
+public class StringGenerator {
 
-    static final int MIN_LENGTH = 1;
-    static final int MAX_LENGTH = 20;
-    static final char MIN_CHARACTER = 'a';
-    static final char MAX_CHARACTER = 'z';
+    public static final int MIN_LENGTH = 1;
+    public static final int MAX_LENGTH = 20;
+    public static final char MIN_CHARACTER = 'a';
+    public static final char MAX_CHARACTER = 'z';
 
-    private StringGenerator() {
-    }
+    private StringGenerator() {}
 
     public static String generateString() {
         int length = (Integer) PrimitiveTypeGenerator.generateValueOfPrimitiveType(int.class, MIN_LENGTH, MAX_LENGTH);

@@ -25,6 +25,10 @@ public class Generator {
             return enumConstants[index];
         }
 
+        if (clazz.isArray()) {
+            return ArrayGenerator.generateArray(clazz, this);
+        }
+
 
         Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 

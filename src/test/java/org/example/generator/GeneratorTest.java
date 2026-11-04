@@ -3,6 +3,7 @@ package org.example.generator;
 import org.example.classes.StateEnum;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
@@ -60,6 +61,19 @@ class GeneratorTest {
 
         assertType(StateEnum.class, result);
         assertTrue(Arrays.asList(StateEnum.values()).contains(result));
+    }
+
+    @Test
+    void generateValueOfType_Array() throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object result = generator.generateValueOfType(int[].class);
+
+        assertType(int[].class, result);
+        int length = Array.getLength(result);
+        assertTrue(length >= ArrayGenerator.MIN_LENGTH && length <= ArrayGenerator.MAX_LENGTH);
+
+        for (int i = 0; i < length; i++) {
+            assertEquals(Integer.class, Array.get(result, i).getClass());
+        }
     }
 
     private static void assertType(Class<?> expectedValueType, Object value) {
