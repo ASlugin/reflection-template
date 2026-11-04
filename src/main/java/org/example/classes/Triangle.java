@@ -1,5 +1,8 @@
 package org.example.classes;
 
+import org.example.generator.Generatable;
+
+@Generatable(value = Shape.class, priority = 5)
 public class Triangle implements Shape {
     private double sideA;
     private double sideB;

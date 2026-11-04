@@ -1,9 +1,6 @@
 package org.example.generator;
 
-import org.example.classes.Rectangle;
-import org.example.classes.StateEnum;
-import org.example.classes.Cart;
-import org.example.classes.Product;
+import org.example.classes.*;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
@@ -126,6 +123,13 @@ class GeneratorTest {
 
         assertEquals(length * width, rectangle.getArea(), 0.0);
         assertEquals(2 * (length + width), rectangle.getPerimeter(), 0.0);
+    }
+
+    @Test
+    void generateValueOfType_Interface() throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object result = generator.generateValueOfType(Shape.class);
+
+        assertInstanceOf(Triangle.class, result);
     }
 
     @Test

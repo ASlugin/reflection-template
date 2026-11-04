@@ -1,7 +1,6 @@
 package org.example.generator;
 
 import org.example.classes.BinaryTreeNode;
-import org.example.classes.Shape;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -53,11 +52,25 @@ class ClassGeneratorTest {
     }
 
     @Test
-    void rejectsInterfaceAndAbstractClass() {
-        assertThrows(UnsupportedOperationException.class,
-                () -> ClassGenerator.generateClass(Shape.class, generator));
-        assertThrows(UnsupportedOperationException.class,
-                () -> ClassGenerator.generateClass(AbstractFixture.class, generator));
+    void choosesHighestPriorityAnnotatedImplementationForInterface() {
+        Object result = ClassGenerator.generateClass(PriorityContract.class, generator);
+
+        assertInstanceOf(HighPriorityImplementation.class, result);
+    }
+
+    @Test
+    void generatesAnnotatedImplementationForAbstractClass() {
+        Object result = ClassGenerator.generateClass(AbstractFixture.class, generator);
+
+        assertInstanceOf(AbstractFixtureImplementation.class, result);
+    }
+
+    @Test
+    void throwsWhenNoAnnotatedImplementationExists() {
+        assertThrows(IllegalArgumentException.class,
+                () -> ClassGenerator.generateClass(UnimplementedContract.class, generator));
+        assertThrows(IllegalArgumentException.class,
+                () -> ClassGenerator.generateClass(UnimplementedAbstract.class, generator));
     }
 
     public static class IntegerArgumentClass {
@@ -83,6 +96,33 @@ class ClassGeneratorTest {
     public abstract static class AbstractFixture {
         public AbstractFixture() {
         }
+    }
+
+    public interface PriorityContract {
+    }
+
+    @Generatable(value = PriorityContract.class, priority = 10)
+    public static class LowPriorityImplementation implements PriorityContract {
+        public LowPriorityImplementation() {
+        }
+    }
+
+    @Generatable(value = PriorityContract.class, priority = 1)
+    public static class HighPriorityImplementation implements PriorityContract {
+        public HighPriorityImplementation() {
+        }
+    }
+
+    @Generatable(value = AbstractFixture.class)
+    public static class AbstractFixtureImplementation extends AbstractFixture {
+        public AbstractFixtureImplementation() {
+        }
+    }
+
+    public interface UnimplementedContract {
+    }
+
+    public abstract static class UnimplementedAbstract {
     }
 
     private static void assertBinaryTreeNodeFields(BinaryTreeNode node, int depth) throws IllegalAccessException {

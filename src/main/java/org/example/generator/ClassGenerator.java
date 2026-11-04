@@ -21,10 +21,14 @@ public class ClassGenerator {
             return null;
         }
 
-        if (Modifier.isInterface(clazz.getModifiers()) || Modifier.isAbstract(clazz.getModifiers())) {
-            throw new UnsupportedOperationException();
+        if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
+            return AbstractTypeGenerator.generateAbstractType(clazz, valueGenerator, depth);
         }
 
+        return generateConcreteClass(clazz, valueGenerator, depth);
+    }
+
+    static Object generateConcreteClass(Class<?> clazz, Generator valueGenerator, int depth) {
         Constructor<?>[] constructors = clazz.getConstructors();
         Arrays.sort(constructors, Comparator.comparingInt(Constructor::getParameterCount));
 
