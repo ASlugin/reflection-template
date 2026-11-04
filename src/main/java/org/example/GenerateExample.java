@@ -4,7 +4,7 @@ import org.example.classes.Example;
 import org.example.classes.StateEnum;
 import org.example.generator.Generator;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class GenerateExample {
     public static void main(String[] args) {
@@ -22,6 +22,9 @@ public class GenerateExample {
 
             byte[] array = (byte[]) gen.generateValueOfType(byte[].class);
             System.out.printf("Array of bytes: %s\n", Arrays.toString(array));
+
+            Collection<Object> list = (Collection<Object>) gen.generateValueOfType(Set.class);
+            System.out.printf("List: type=%s %s\n", list.getClass().getTypeName(), list);
 
         } catch (Throwable e) {
             throw new RuntimeException(e);

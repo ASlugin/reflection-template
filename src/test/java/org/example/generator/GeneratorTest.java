@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -72,7 +75,20 @@ class GeneratorTest {
         assertTrue(length >= ArrayGenerator.MIN_LENGTH && length <= ArrayGenerator.MAX_LENGTH);
 
         for (int i = 0; i < length; i++) {
-            assertEquals(Integer.class, Array.get(result, i).getClass());
+            assertType(Integer.class, Array.get(result, i));
+        }
+    }
+
+    @Test
+    void generateValueOfType_Collection() throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        Object result = generator.generateValueOfType(List.class);
+
+        assertType(ArrayList.class, result);
+        List<?> generatedList = (List<?>) result;
+        assertFalse(generatedList.isEmpty());
+
+        for (Object value : generatedList) {
+            assertEquals(Byte.class, value.getClass());
         }
     }
 

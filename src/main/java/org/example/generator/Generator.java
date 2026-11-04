@@ -2,11 +2,13 @@ package org.example.generator;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Random;
 
 public class Generator {
 
-    public Object generateValueOfType(Class<?> clazz) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+    public Object generateValueOfType(Class<?> clazz)
+            throws InvocationTargetException, InstantiationException, IllegalAccessException {
         if (PrimitiveTypeGenerator.isPrimitiveType(clazz)) {
             return PrimitiveTypeGenerator.generateValueOfPrimitiveType(clazz);
         }
@@ -27,6 +29,10 @@ public class Generator {
 
         if (clazz.isArray()) {
             return ArrayGenerator.generateArray(clazz, this);
+        }
+
+        if (Collection.class.isAssignableFrom(clazz)) {
+            return CollectionGenerator.generateCollection(clazz, this);
         }
 
 
