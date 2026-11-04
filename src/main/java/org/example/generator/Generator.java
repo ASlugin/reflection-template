@@ -15,6 +15,17 @@ public class Generator {
             return StringGenerator.generateString();
         }
 
+        if (clazz.isEnum()) {
+            Object[] enumConstants = clazz.getEnumConstants();
+            int index = (int) PrimitiveTypeGenerator.generateValueOfPrimitiveType(
+                    int.class,
+                    0,
+                    enumConstants.length - 1
+            );
+            return enumConstants[index];
+        }
+
+
         Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 
         int randomConstructorIndex = new Random().nextInt(constructors.length);

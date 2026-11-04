@@ -11,13 +11,12 @@ public final class StringGenerator {
     }
 
     public static String generateString() {
-        int generatedLength = (Integer) PrimitiveTypeGenerator.generateValueOfPrimitiveType(int.class);
-        int length = Math.floorMod(generatedLength, MAX_LENGTH - MIN_LENGTH + 1) + MIN_LENGTH;
+        int length = (Integer) PrimitiveTypeGenerator.generateValueOfPrimitiveType(int.class, MIN_LENGTH, MAX_LENGTH);
 
         StringBuilder result = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            char generatedCharacter = (Character) PrimitiveTypeGenerator.generateValueOfPrimitiveType(char.class);
-            char character = (char) (Math.floorMod(generatedCharacter, MAX_CHARACTER - MIN_CHARACTER + 1) + MIN_CHARACTER);
+            char character = (Character) PrimitiveTypeGenerator
+                    .generateValueOfPrimitiveType(char.class, MIN_CHARACTER, MAX_CHARACTER);
             result.append(character);
         }
         return result.toString();

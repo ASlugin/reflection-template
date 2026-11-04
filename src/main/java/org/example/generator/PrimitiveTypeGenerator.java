@@ -57,4 +57,26 @@ public class PrimitiveTypeGenerator {
 
         throw new IllegalArgumentException("Unsupported primitive type: " + primitiveType.getTypeName());
     }
+
+    public static Object generateValueOfPrimitiveType(Class<?> clazz, Object minValue, Object maxValue) {
+        Object value = generateValueOfPrimitiveType(clazz);
+        return bound(clazz, value, minValue, maxValue);
+    }
+
+    private static Object bound(Class<?> clazz, Object value, Object minValue, Object maxValue) {
+        if (clazz == int.class || clazz == Integer.class) {
+            int min = (Integer) minValue;
+            int max = (Integer) maxValue;
+            int generatedValue =  (Integer) value;
+            return (int) (Math.floorMod(generatedValue, max - min + 1) + min);
+        }
+        if (clazz == char.class || clazz == Character.class) {
+            char min = (Character) minValue;
+            char max = (Character) maxValue;
+            char generatedValue = (Character) value;
+            return (char) (Math.floorMod(generatedValue, max - min + 1) + min );
+        }
+
+        throw new UnsupportedOperationException("Bounded generation is supported only for int and char");
+    }
 }
