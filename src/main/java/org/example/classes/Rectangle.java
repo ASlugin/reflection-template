@@ -1,5 +1,8 @@
 package org.example.classes;
 
+import org.example.generator.Generatable;
+
+@Generatable(value = Shape.class, priority = 10)
 public class Rectangle implements Shape {
     private double length;
     private double width;
